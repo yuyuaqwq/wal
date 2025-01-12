@@ -11,10 +11,18 @@
 
 #include <vector>
 
+#include <wal/noncopyable.h>
 #include <wal/tinyio.hpp>
 #include <wal/log_format.h>
 
 namespace wal {
+
+class ReaderError : public std::exception {
+public:
+    using Base = std::exception;
+    explicit ReaderError(char const* const msg) noexcept
+        : Base(msg) {}
+};
 
 class Reader : noncopyable {
 public:
@@ -22,7 +30,6 @@ public:
     ~Reader();
 
     void Open(std::string_view path);
-
     std::optional<std::string> ReadRecord();
 
 private:

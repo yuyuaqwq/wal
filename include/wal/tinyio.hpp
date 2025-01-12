@@ -30,7 +30,7 @@
 # define INVALID_HANDLE_VALUE -1
 #endif // #ifndef _WIN32
 
-namespace wal {
+namespace tinyio {
 
 enum class access_mode {
     read,
@@ -475,4 +475,4 @@ private:
     file_handle_type handle_{ invalid_handle };
 };
 
-} // namesapce wal
+} // namesapce tinyio

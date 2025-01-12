@@ -12,7 +12,7 @@
 #include <cstdint>
 #include <cstddef>
 
-namespace yudb {
+namespace wal {
 
 // https://blog.csdn.net/gongmin856/article/details/77101397
 class Crc32 {

@@ -10,9 +10,10 @@
 #include "wal/log_writer.h"
 
 #include <cstring>
+
 #include <string_view>
 
-#include "crc32.h"
+#include <wal/crc32.h>
 
 namespace wal {
 
