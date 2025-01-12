@@ -18,6 +18,10 @@ set(SOURCES
 
 add_library(wal ${SOURCES})
 
+set(WAL_HEADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../include CACHE STRING "wal header dir")
+set(WAL_LIB wal CACHE STRING "wal lib")
+
 target_include_directories(wal PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(wal PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+target_include_directories(wal PRIVATE ${WAL_HEADER_DIR})
 target_include_directories(wal PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../third_party)
+
