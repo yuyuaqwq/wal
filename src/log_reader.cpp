@@ -14,9 +14,9 @@
 namespace wal {
 
 Reader::Reader() :
-    eof_{ false },
-    size_{ 0 },
-    offset_{ 0 } {}
+    eof_(false),
+    size_(0),
+    offset_(0) {}
 
 Reader::~Reader() = default;
 
