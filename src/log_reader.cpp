@@ -13,10 +13,10 @@
 
 namespace wal {
 
-Reader::Reader() :
-    eof_(false),
-    size_(0),
-    offset_(0) {}
+Reader::Reader()
+    : eof_(false)
+    , size_(0)
+    , offset_(0) {}
 
 Reader::~Reader() = default;
 
@@ -40,13 +40,13 @@ std::optional<std::string> Reader::ReadRecord() {
         switch (record->type) {
         case RecordType::kFullType: {
             if (in_fragmented_record) {
-                throw ReaderError("partial record without end(1).");
+                throw std::runtime_error("partial record without end(1).");
             }
             return std::string(reinterpret_cast<const char*>(record->data), record->size);
         }
         case RecordType::kFirstType: {
             if (in_fragmented_record) {
-                throw ReaderError("partial record without end(2).");
+                throw std::runtime_error("partial record without end(2).");
             }
             in_fragmented_record = true;
             res.append(reinterpret_cast<const char*>(record->data), record->size);
@@ -54,21 +54,21 @@ std::optional<std::string> Reader::ReadRecord() {
         }
         case RecordType::kMiddleType: {
             if (!in_fragmented_record) {
-                throw ReaderError("missing start of fragmented record(1).");
+                throw std::runtime_error("missing start of fragmented record(1).");
             }
             res.append(reinterpret_cast<const char*>(record->data), record->size);
             break;
         }
         case RecordType::kLastType: {
             if (!in_fragmented_record) {
-                throw ReaderError("missing start of fragmented record(2).");
+                throw std::runtime_error("missing start of fragmented record(2).");
             }
             res.append(reinterpret_cast<const char*>(record->data), record->size);
             in_fragmented_record = false;
             return res;
         }
         default: {
-            throw ReaderError("unknown record type.");
+            throw std::runtime_error("unknown record type.");
         }
         }
     } while (true);
@@ -103,7 +103,7 @@ const LogRecord* Reader::ReadPhysicalRecord() {
         if (kHeaderSize + record->size > size_) {
             size_ = 0;
             if (!eof_) {
-                throw ReaderError("incorrect log record size.");
+                throw std::runtime_error("incorrect log record size.");
             }
             // Possibly crashed when writing data
             return nullptr;

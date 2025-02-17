@@ -17,13 +17,6 @@
 
 namespace wal {
 
-class ReaderError : public std::exception {
-public:
-    using Base = std::exception;
-    explicit ReaderError(char const* const msg) noexcept
-        : Base(msg) {}
-};
-
 class Reader : noncopyable {
 public:
     Reader();
