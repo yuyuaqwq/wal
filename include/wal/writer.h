@@ -1,5 +1,5 @@
 //The MIT License(MIT)
-//Copyright © 2025 https://github.com/yuyuaqwq
+//Copyright © 2024 https://github.com/yuyuaqwq
 //
 //Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files(the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and /or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions :
 //
@@ -9,31 +9,43 @@
 
 #pragma once
 
-#include <vector>
+#include <cassert>
 
-#include <wal/noncopyable.h>
+#include <span>
+#include <vector>
+#include <filesystem>
+
 #include <wal/tinyio.hpp>
+
 #include <wal/log_format.h>
+#include <wal/noncopyable.h>
 
 namespace wal {
 
-class Reader : noncopyable {
+class Writer : public noncopyable {
 public:
-    Reader();
-    ~Reader();
+    Writer();
+    ~Writer();
 
-    void Open(std::string_view path);
-    std::optional<std::string> ReadRecord();
+    void Open(std::string_view path, tinyio::access_mode access_mode);
+    void Close();
+    void AppendRecordToBuffer(std::span<const uint8_t> data);
+    void AppendRecordToBuffer(std::string_view data);
+    void FlushBuffer();
+    void Sync();
 
+    auto& file() { return file_; }
+    auto& size() const { return size_; }
+   
 private:
-    const LogRecord* ReadPhysicalRecord();
+    void AppendRecord(std::span<const uint8_t> data);
+    void EmitPhysicalRecord(RecordType type, const uint8_t* ptr, size_t size);
 
 private:
     tinyio::file file_;
-    std::vector<uint8_t> buffer_;
-    size_t size_;
-    size_t offset_;
-    bool eof_;
+    size_t size_ = 0;
+    size_t block_offset_ = 0;
+    std::vector<uint8_t> rep_;
 };
 
 } // namespace wal
