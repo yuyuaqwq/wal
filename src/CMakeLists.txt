@@ -12,8 +12,8 @@
 
 set(SOURCES
     crc32.cpp
-    log_writer.cpp
-    log_reader.cpp
+    writer.cpp
+    reader.cpp
 )
 
 add_library(wal ${SOURCES})
