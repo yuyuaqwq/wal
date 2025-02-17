@@ -121,7 +121,7 @@ inline file_handle_type open_file(const std::filesystem::path& path, const acces
     std::error_code ec;
     auto handle = open_file(path, mode, ec);
     if (ec) {
-        throw std::ios_base::failure{"tinyio::detail::win::open_file."};
+        throw std::system_error(ec, "tinyio::detail::win::open_file.");
     }
     return handle;
 }
@@ -201,7 +201,7 @@ public:
         std::error_code ec;
         seekg(pos, ec);
         if (ec) {
-            throw std::ios_base::failure{ "tinyio::file::seekg." };
+            throw std::system_error(ec, "tinyio::file::seekg.");
         }
     }
 
@@ -253,7 +253,7 @@ public:
         std::error_code ec;
         seekg(off, dir, ec);
         if (ec) {
-            throw std::ios_base::failure{ "tinyio::file::seekg" };
+            throw std::system_error(ec, "tinyio::file::seekg");
         }
     }
 
@@ -281,7 +281,7 @@ public:
         std::error_code ec;
         auto res = tellg(ec);
         if (ec) {
-            throw std::ios_base::failure{ "tinyio::file::tellg" };
+            throw std::system_error(ec, "tinyio::file::tellg");
         }
         return res;
     }
@@ -294,7 +294,7 @@ public:
         std::error_code ec;
         auto res = size(ec);
         if (ec) {
-            throw std::ios_base::failure{ "tinyio::file::size" };
+            throw std::system_error(ec, "tinyio::file::size");
         }
         return res;
     }
@@ -321,7 +321,7 @@ public:
         std::error_code ec;
         resize(new_size, ec);
         if (ec) {
-            throw std::ios_base::failure{ "tinyio::file::resize" };
+            throw std::system_error(ec, "tinyio::file::resize");
         }
     }
 
@@ -348,7 +348,7 @@ public:
         std::error_code ec;
         auto res = read(buf, size, ec);
         if (ec) {
-            throw std::ios_base::failure{ "tinyio::file::read" };
+            throw std::system_error(ec, "tinyio::file::read");
         }
         return res;
     }
@@ -376,7 +376,7 @@ public:
         std::error_code ec;
         auto res = write(buf, size, ec);
         if (ec) {
-            throw std::ios_base::failure{ "tinyio::file::write" };
+            throw std::system_error(ec, "tinyio::file::write");
         }
         return res;
     }
@@ -399,7 +399,7 @@ public:
         std::error_code ec;
         sync(ec);
         if (ec) {
-            throw std::ios_base::failure{ "tinyio::file::sync" };
+            throw std::system_error(ec, "tinyio::file::sync");
         }
     }
 
@@ -445,7 +445,7 @@ public:
         std::error_code ec;
         lock(mode, ec);
         if (ec) {
-            throw std::ios_base::failure{ "tinyio::file::lock" };
+            throw std::system_error(ec, "tinyio::file::lock");
         }
     }
 
@@ -467,7 +467,7 @@ public:
         std::error_code ec;
         unlock(ec);
         if (ec) {
-            throw std::ios_base::failure{ "tinyio::file::unlock" };
+            throw std::system_error(ec, "tinyio::file::unlock");
         }
     }
 
